@@ -1,0 +1,23 @@
+Error:
+TASK [create db] ***************************************************************************************************************************************************
+fatal: [10.128.0.58]: FAILED! => {"changed": false, "msg": "unable to connect to database, check login_user and login_password are correct or /root/.my.cnf has the 
+credentials. Exception message: (2003, \"Can't connect to MySQL server on 'localhost' ([Errno 111] Connection refused)\")"}
+
+Solution:
+
+Check file /etc/my.cnf.d/openstack.cnf
+
+update bind address to 0.0.0.0
+
+example:
+
+[root@allinone ~]# cat /etc/my.cnf.d/openstack.cnf 
+[mysqld]
+bind-address = 0.0.0.0
+
+default-storage-engine = innodb
+innodb_file_per_table = on
+max_connections = 4096
+collation-server = utf8_general_ci
+character-set-server = utf8
+

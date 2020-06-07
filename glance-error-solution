@@ -1,0 +1,40 @@
+Glance Error:
+
+[root@allinone ~]# openstack image list
+Unable to establish connection to http://10.128.0.58:9292/v2/images: HTTPConnectionPool(host='10.128.0.58', port=9292): Max retries exceeded with url: /v2/images (C
+aused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb10fd53b10>: Failed to establish a new connection: [Errno 111] Connection refused',))
+[root@allinone ~]# systemctl status openstack-glance-api.service                  
+● openstack-glance-api.service - OpenStack Image Service (code-named Glance) API server
+   Loaded: loaded (/usr/lib/systemd/system/openstack-glance-api.service; enabled; vendor preset: disabled)
+   Active: failed (Result: start-limit) since Sun 2020-06-07 18:07:09 UTC; 57s ago
+  Process: 2904 ExecStart=/usr/bin/glance-api (code=exited, status=99)
+ Main PID: 2904 (code=exited, status=99)
+ 
+ 
+ Solution : 
+ 
+ Problem was /var/log/glance/api.log have not correct permission
+ 
+ set permission to api.log and service started sucessfully .
+ 
+ [root@allinone ~]# ls -l /var/log/glance/                                        
+total 4
+-rw-rw----. 1 root glance 565 Jun  7 18:05 api.log
+
+[root@allinone ~]# openstack-service status                                      
+MainPID=3530 Id=openstack-glance-api.service ActiveState=active
+
+
+New Error :
+
+[root@allinone ~]# openstack image list
+Unauthorized (HTTP 401)
+
+Jun  7 18:19:51 allinone glance-api: /usr/lib/python2.7/site-packages/paste/deploy/loadwsgi.py:22: PkgResourcesDeprecationWarning: Parameters to load are deprecated.  Call .resolve and .require separately.
+Jun  7 18:19:51 allinone glance-api: return pkg_resources.EntryPoint.parse("x=" + s).load(Fal
+
+Solution:
+
+Permission issue . glance user pwd not match with glance-api.conf . 
+glance user pwd corrected and updated same in glace-api.conf
+
