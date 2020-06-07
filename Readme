@@ -1,0 +1,2 @@
+First update the hosts file in envs/hosts
+update the variable entry in playbook/main.yml
